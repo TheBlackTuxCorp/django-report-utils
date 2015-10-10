@@ -2,6 +2,8 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.fields import FieldDoesNotExist
 from django.conf import settings
+from copy import deepcopy
+
 import inspect
 
 def isprop(v):
@@ -24,7 +26,8 @@ def get_relation_fields_from_model(model_class):
     relation_fields = []
     all_fields_names = model_class._meta.get_all_field_names()
     for field_name in all_fields_names:
-        field = model_class._meta.get_field_by_name(field_name)
+        field_copy = lambda w, x, y, z: (deepcopy(w), x, y, z)
+        field =  field_copy(*model_class._meta.get_field_by_name(field_name))
         # get_all_field_names will return the same field
         # both with and without _id. Ignore the duplicate.
         if field_name[-3:] == '_id' and field_name[:-3] in all_fields_names:
