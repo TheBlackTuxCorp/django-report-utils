@@ -139,8 +139,7 @@ class DataExportMixin(object):
         sh = wb.get_active_sheet()
         c = csv.writer(myfile)
         for r in sh.rows:
-            c.writerow([cell.value.encode('utf-8') \
-                            if hasattr(cell.value, 'encode') else cell.value \
+            c.writerow([cell.value.encode('utf-8') if hasattr(cell.value, 'encode') else cell.value \
                             for cell in r])
         return myfile
 
